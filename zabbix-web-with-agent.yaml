@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: zabbix
+  name: zabbix-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zabbix-web
+  template:
+    metadata:
+      namespace: zabbix
+      name: zabbix-web
+      labels:
+        app: zabbix-web
+    spec:
+      containers:
+      - name: zabbix-web
+        image: zabbix/zabbix-web-nginx-mysql:latest
+        env:
+        - name: ZBX_SERVER_HOST
+          value: zabbix-server.zabbix
+        - name: PHP_TZ
+          value: Asia/Shanghai
+        - name: ZBX_SERVER_NAME
+          value: ransh-zabbix
+        - name: DB_SERVER_HOST
+          value: zabbix-mysql.zabbix
+        - name: MYSQL_DATABASE
+          value: zabbix
+        - name: MYSQL_USER
+          value: zabbix
+        - name: MYSQL_PASSWORD
+          value: zabbix
+      - name: zabbix-agent
+        image: zabbix/zabbix-agent:latest
+        ports:
+        - containerPort: 10050
+          name: zabbix-agent
+        env:
+        - name: ZBX_HOSTNAME
+          value: zabbix-web
+        - name: ZBX_SERVER_HOST
+          value: zabbix-server.zabbix
+        - name: ZBX_PASSIVESERVERS
+          value: "172.20.0.0/16"

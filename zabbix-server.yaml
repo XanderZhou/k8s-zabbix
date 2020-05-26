@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: zabbix
+  name: zabbix-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zabbix-server
+  template:
+    metadata:
+      namespace: zabbix
+      name: zabbix-server
+      labels:
+        app: zabbix-server
+    spec:
+      containers:
+      - name: zabbix-server
+        #image: zabbix/zabbix-server-mysql:alpine-latest
+        image: oracerzhou/zabbix-server-mysql:5.0
+        imagePullPolicy: Always
+        #image: zabbix/zabbix-server-mysql:alpine-latest
+        env:
+        - name: DB_SERVER_HOST
+          value: zabbix-mysql.zabbix
+        - name: MYSQL_DATABASE
+          value: zabbix
+        - name: MYSQL_USER
+          value: zabbix
+        - name: MYSQL_PASSWORD
+          value: zabbix
+        volumeMounts:
+        - name: alertscripts-persistent-storage 
+          mountPath: /usr/lib/zabbix/alertscripts
+      - name: zabbix-agent
+        image: zabbix/zabbix-agent:latest
+        ports:
+        - containerPort: 10050
+          name: zabbix-agent
+        env:
+        - name: ZBX_HOSTNAME
+          value: Zabbix server
+        - name: ZBX_SERVER_HOST
+          value: 127.0.0.1
+      volumes:
+      - name: alertscripts-persistent-storage
+        persistentVolumeClaim:
+          claimName: zabbix-server-alertscripts

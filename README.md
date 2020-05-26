@@ -25,7 +25,7 @@ import sys
 import os
 
 headers = {'Content-Type': 'application/json;charset=utf-8'}
-api_url = "https://oapi.dingtalk.com/robot/send?access_token=5eca7ddcc4c80dc9f397b37107f17e18a83b3201a170cffb769daa4359bad4bb"
+api_url = "https://oapi.dingtalk.com/robot/send?access_token=xxxxx"
 
 def msg(text):
     json_text= {

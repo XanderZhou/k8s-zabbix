@@ -55,6 +55,7 @@ if __name__ == '__main__':
 #### {HOST.NAME}
 ### {TRIGGER.NAME}
 ##### 发生时间：{EVENT.DATE} {EVENT.TIME}
+## **{ITEM.LASTVALUE}**
 > 来自阿里云zabbix监控
 ```
 

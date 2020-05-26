@@ -21,8 +21,6 @@ spec:
           - '--collation-server=utf8_bin'
           - '--default-authentication-plugin=mysql_native_password'
         env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: Password01!
         - name: MYSQL_DATABASE
           value: zabbix
         - name: MYSQL_USER
